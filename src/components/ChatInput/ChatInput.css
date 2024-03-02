@@ -1,0 +1,42 @@
+.chat-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+  }
+  
+  /* 使用textarea代替input[type="text"]以支持换行 */
+  .chat-input textarea {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    outline: none;
+    resize: none; /* 禁止调整大小 */
+    overflow: auto; /* 自动显示滚动条 */
+  }
+  
+  .chat-input button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  .chat-input button:hover {
+    background-color: #0056b3;
+  }
+  
+  .file-upload-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* 确保没有内边距导致额外空间 */
+    margin: 0; /* 确保没有外边距导致额外空间 */
+  }
+
+  
