@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css'; // 确保引入了相应的CSS文件
-import ChatList from './components/Sidebar/ChatList';
-import ChatWindow from './components/Chat/ChatWindow';
+import SideList from './components/Sidebar/SideList';
+import ChatWindow from './components/ChatPage/ChatWindow';
 import ChatInput from './components/ChatInput/ChatInput';
+import KnowledgeChat from './components/KbPage/KnowledgeChat';
 
 function App() {
   // 状态初始化
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [chats, setChats] = useState([
-    { id: '1', name: 'Chat 1' },
-    { id: '2', name: 'Chat 2' }
-  ]);
-  const [currentChat, setCurrentChat] = useState('1');
   const [messages, setMessages] = useState([
     { text: 'Hello there!' },
     { text: 'General Kenobi!' }
   ]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [pages, setPages] = useState([
+    { id: '1', name: '聊天对话', path: '/', Component: ChatWindow },
+    { id: '2', name: '知识库问答', path: '/xx', Component: KnowledgeChat }
+  ]);
+  const [currentPage, setCurrentPage] = useState('1');
 
   // 方法定义
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleChatSelect = (chatId) => {
-    setCurrentChat(chatId);
+  const handlePageSelect = (pageId) => {
+    setCurrentPage(pageId);
     // 更新消息逻辑
   };
 
@@ -39,20 +41,34 @@ function App() {
 
   // 组件渲染
   return (
-    <div className="App">
-      <div className={`sidebar ${isSidebarOpen ? '' : 'sidebar-collapsed'}`}>
-        <ChatList chats={chats} onChatSelect={handleChatSelect} />
-        <div className="toggle-btn" onClick={toggleSidebar}></div>
-      </div>
-      <div className="main-content">
-        <div className="chat-window">
-          <ChatWindow messages={messages} />
+    <Router>
+      <div className="App">
+        <div className={`sidebar ${isSidebarOpen ? '' : 'sidebar-collapsed'}`}>
+          <SideList pages={pages} />
+          <Routes>
+            {pages.map((page) => (
+              <Route to={page.path} />
+            ))}
+          </Routes>
+          <div className="toggle-btn" onClick={toggleSidebar}></div>
         </div>
-        <div>
-          <ChatInput onSendMessage={handleSendMessage} onFileUpload={handleFileUpload} />
+        <div className="main-content">
+          <Routes>
+            {pages.map((page) => (
+              <Route
+              className="chat-window"
+                key={page.id}
+                path={page.path}
+                element={<page.Component messages={messages} />}
+              />
+            ))}
+          </Routes>
+          <div>
+            <ChatInput onSendMessage={handleSendMessage} onFileUpload={handleFileUpload} />
+          </div>
         </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

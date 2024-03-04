@@ -1,6 +1,6 @@
 
 /* 聊天列表容器样式 */
-.chat-list {
+.page-list {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -9,7 +9,7 @@
 }
 
 /* 单个聊天项样式 */
-.chat-list .chat-item {
+.page-list .side-item {
   padding: 10px 15px;
   border-bottom: 1px solid #ddd; /* 每个项之间的分隔线 */
   color: #e9e9e9; /* 文字颜色 */
@@ -18,19 +18,25 @@
 }
 
 /* 聊天项悬浮效果 */
-.chat-list .chat-item:hover {
+.page-list .side-item:hover {
   background-color: #354c63;
 }
 
 /* 聊天项被选中时的样式 */
-.chat-list .chat-item.active {
+.page-list .side-item.active {
   background-color: #007bff;
   color: white;
 }
 
 /* 聊天项文本样式 */
-.chat-list .chat-item p {
+.page-list .side-item p {
   margin: 0; /* 移除默认的margin */
   word-break: break-word; /* 防止长文本溢出 */
+}
+
+.side-item{
+  display: block;
+  text-decoration: none; 
+  font-size: large;
 }
 
