@@ -48,7 +48,6 @@
 
 .chat-window {
   flex-grow: 1; /* 让.chat-window填充剩余空间 */
-  padding: 20px;
   background-color: #ecf0f1;
   overflow-y: auto;
 }

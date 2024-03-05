@@ -7,7 +7,7 @@ const ChatWindow = ({ messages }) => {
       <div>聊天对话</div>
       <div>
         {messages.map((message, index) => (
-          <Message key={index} text={message.text} />
+          <Message key={index} text={message.text} type={message.type} />
         ))}
       </div>
     </div>

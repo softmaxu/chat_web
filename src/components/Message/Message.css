@@ -1,0 +1,37 @@
+/* 消息样式基础 */
+.message {
+    max-width: 80%;
+    margin: 8px 10px; /* 上下消息间距 */
+    padding: 10px;
+    border-radius: 20px; /* 消息泡泡圆角 */
+    color: #333; /* 文字颜色 */
+    font-family: Arial, sans-serif; /* 字体 */
+    line-height: 1.4; /* 行高 */
+    word-wrap: break-word; /* 长单词或URL自动换行 */
+  }
+  
+  /* 发送消息样式 */
+  .sent-message {
+    background-color: #d5ffb5; /* 发送消息浅绿色背景 */
+    margin-left: auto; /* 右对齐 */
+    border-bottom-right-radius: 0; /* 调整右下角的圆角为直角 */
+  }
+  
+  /* 接收消息样式 */
+  .received-message {
+    background-color: #ffffff; /* 接收消息浅白色背景 */
+    margin-right: auto; /* 左对齐 */
+    border-bottom-left-radius: 0; /* 调整左下角的圆角为直角 */
+  }
+  
+  /* 响应式设计 */
+  @media (max-width: 600px) {
+    .chat-container {
+      margin: 10px;
+      padding: 10px;
+    }
+  
+    .message {
+      max-width: 75%; /* 小屏幕上允许消息占据更多空间 */
+    }
+  }

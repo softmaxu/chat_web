@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css'; // 确保引入了相应的CSS文件
 import SideList from './components/Sidebar/SideList';
 import ChatWindow from './components/ChatPage/ChatWindow';
 import ChatInput from './components/ChatInput/ChatInput';
 import KnowledgeChat from './components/KbPage/KnowledgeChat';
+import useWebSocket from './utils/websocketService';
 
 function App() {
   // 状态初始化
   const [messages, setMessages] = useState([
-    { text: 'Hello there!' },
-    { text: 'General Kenobi!' }
+    { text: 'Hello there!' ,type: 'sent'},
+    { text: 'General Kenobi!' ,type: 'received'}
   ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [pages, setPages] = useState([
@@ -29,10 +30,11 @@ function App() {
     // 更新消息逻辑
   };
 
-  const handleSendMessage = (message) => {
-    setMessages([...messages, { text: message }]);
-    // 发送消息逻辑
-  };
+  const handleSendMessage = useCallback((event) => {
+    console.log(event);
+    const message = { text: event, type: 'sent'}
+    setMessages((prevMessages) => [...prevMessages, message]);
+  }, []);
 
   const handleFileUpload = (file) => {
     console.log(file);
