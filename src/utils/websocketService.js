@@ -1,43 +1,46 @@
-import { useState, useEffect, useCallback } from 'react';
+// 文件路径: src/utils/websocketService.js
 
-// url为WebSocket服务器地址，onMessage是接收消息时的回调函数
+import { useState, useEffect, useRef } from 'react';
+
 function useWebSocket(url, onMessage) {
-  const [ws, setWs] = useState(null);
+  const ws = useRef(null);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // 创建WebSocket连接
-    const websocket = new WebSocket(url);
-    setWs(websocket);
+    ws.current = new WebSocket(url);
 
-    // 当WebSocket连接打开时执行的操作
-    websocket.onopen = () => {
+    ws.current.onopen = () => {
       console.log('WebSocket connected');
+      setIsConnected(true);
     };
 
-    // 接收到消息时执行的操作
-    websocket.onmessage = (event) => {
-      if (typeof onMessage === 'function') {
-        onMessage(event);
+    ws.current.onmessage = (event) => {
+      if (onMessage) {
+        onMessage(event.data);
       }
     };
 
-    // 出错时执行的操作
-    websocket.onerror = (error) => {
+    ws.current.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
 
-    // 组件卸载时关闭WebSocket连接
+    ws.current.onclose = () => {
+      console.log('WebSocket disconnected');
+      setIsConnected(false);
+    };
+
     return () => {
-      websocket.close();
+      ws.current.close();
     };
   }, [url, onMessage]);
 
-  // 发送消息的函数
-  const sendMessage = useCallback((message) => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify(message));
+  const sendMessage = (message) => {
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(message);
     }
-  }, [ws]);
+  };
 
-  return [sendMessage];
+  return { sendMessage, isConnected };
 }
+
+export default useWebSocket;

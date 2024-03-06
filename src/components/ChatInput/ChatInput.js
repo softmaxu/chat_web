@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import './ChatInput.css'; // 确保CSS文件的路径正确
+import useWebSocket from '../../utils/websocketService'; // 引入自定义的useWebSocket Hook
 
-const ChatInput = ({ onSendMessage, onFileUpload }) => {
-  const [message, setMessage] = useState('');
+const ChatInput = ({displaySentmessage,onReceiveMessage, onFileUpload }) => {
+  const [inputValue, setInputValue] = useState('');
 
-  const handleSend = () => {
-    if (message.trim()) {
-      onSendMessage(message);
-      setMessage('');
-    }
+  const { sendMessage, isConnected } = useWebSocket('ws://10.82.77.104:8081', onReceiveMessage);
+
+  const handleSendMessage = () => {
+    const messageObj = { text: inputValue, type: 'sent' }; // 添加类型为'sent'
+    const messageString = JSON.stringify(messageObj);
+    sendMessage(messageString);
+    displaySentmessage(messageObj);
+    setInputValue(''); // 清空输入框
   };
 
   const handleFileChange = (event) => {
@@ -20,11 +24,11 @@ const ChatInput = ({ onSendMessage, onFileUpload }) => {
   return (
 <div className="chat-input">
   <textarea
-    value={message}
-    onChange={(e) => setMessage(e.target.value)}
+    value={inputValue}
+    onChange={(e) => setInputValue(e.target.value)}
     placeholder="Type a message..."
   ></textarea>
-  <button onClick={handleSend}>Send</button>
+  <button onClick={handleSendMessage} disabled={!isConnected}>Send</button>
   <label className="file-upload-btn">
     <i className="fas fa-paperclip"></i> {/* 使用Font Awesome图标 */}
     <input
@@ -34,8 +38,6 @@ const ChatInput = ({ onSendMessage, onFileUpload }) => {
     />
   </label>
 </div>
-
-
   );
 };
 

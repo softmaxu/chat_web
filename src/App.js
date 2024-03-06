@@ -5,7 +5,7 @@ import SideList from './components/Sidebar/SideList';
 import ChatWindow from './components/ChatPage/ChatWindow';
 import ChatInput from './components/ChatInput/ChatInput';
 import KnowledgeChat from './components/KbPage/KnowledgeChat';
-import useWebSocket from './utils/websocketService';
+import useWebSocket from './utils/websocketService'; // 引入自定义的useWebSocket Hook
 
 function App() {
   // 状态初始化
@@ -20,6 +20,20 @@ function App() {
   ]);
   const [currentPage, setCurrentPage] = useState('1');
 
+  const displaySentmessage = (message) => { 
+    setMessages((prevMessages) => [...prevMessages, message]);
+  }
+
+  const handleNewMessage = useCallback((message) => {
+    const messageObj = JSON.parse(message);
+    const messageWithType = {
+      ...messageObj, // 展开原始消息对象
+      type: 'received', // 添加type字段
+    };
+    console.log('New message:', messageWithType);
+    setMessages((prevMessages) => [...prevMessages, messageWithType]);
+  }, []);
+
   // 方法定义
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -29,12 +43,6 @@ function App() {
     setCurrentPage(pageId);
     // 更新消息逻辑
   };
-
-  const handleSendMessage = useCallback((event) => {
-    console.log(event);
-    const message = { text: event, type: 'sent'}
-    setMessages((prevMessages) => [...prevMessages, message]);
-  }, []);
 
   const handleFileUpload = (file) => {
     console.log(file);
@@ -66,7 +74,7 @@ function App() {
             ))}
           </Routes>
           <div>
-            <ChatInput onSendMessage={handleSendMessage} onFileUpload={handleFileUpload} />
+            <ChatInput displaySentmessage={displaySentmessage} onReceiveMessage={handleNewMessage} onFileUpload={handleFileUpload} />
           </div>
         </div>
       </div>
