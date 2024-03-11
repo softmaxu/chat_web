@@ -10,8 +10,8 @@ import useWebSocket from './utils/websocketService'; // 引入自定义的useWeb
 function App() {
   // 状态初始化
   const [messages, setMessages] = useState([
-    { text: 'Hello there!' ,type: 'sent'},
-    { text: 'General Kenobi!' ,type: 'received'}
+    { text: '你是一个模具专业的AI大模型，请按照要求回答用户的提问。' ,type: 'sent'},
+    { text: '好的。请问我可以提供什么帮助？' ,type: 'received'}
   ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [pages, setPages] = useState([
@@ -22,10 +22,14 @@ function App() {
 
   const displaySentmessage = (message) => { 
     setMessages((prevMessages) => [...prevMessages, message]);
+    return messages;
   }
+
+
 
   const handleNewMessage = useCallback((message) => {
     const messageObj = JSON.parse(message);
+    console.log("handleNewMessage",message)
     const messageWithType = {
       ...messageObj, // 展开原始消息对象
       type: 'received', // 添加type字段
@@ -74,7 +78,7 @@ function App() {
             ))}
           </Routes>
           <div>
-            <ChatInput displaySentmessage={displaySentmessage} onReceiveMessage={handleNewMessage} onFileUpload={handleFileUpload} />
+            <ChatInput messages={messages} displaySentmessage={displaySentmessage} onReceiveMessage={handleNewMessage} onFileUpload={handleFileUpload} />
           </div>
         </div>
       </div>

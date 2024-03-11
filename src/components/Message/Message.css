@@ -12,14 +12,14 @@
   
   /* 发送消息样式 */
   .sent-message {
-    background-color: #d5ffb5; /* 发送消息浅绿色背景 */
+    background-color: #ffffff; /* 发送消息浅绿色背景 */
     margin-left: auto; /* 右对齐 */
     border-bottom-right-radius: 0; /* 调整右下角的圆角为直角 */
   }
   
   /* 接收消息样式 */
   .received-message {
-    background-color: #ffffff; /* 接收消息浅白色背景 */
+    background-color: #bcd1fa; /* 接收消息浅白色背景 */
     margin-right: auto; /* 左对齐 */
     border-bottom-left-radius: 0; /* 调整左下角的圆角为直角 */
   }

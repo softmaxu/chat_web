@@ -2,16 +2,16 @@ import React, { useState, useCallback } from 'react';
 import './ChatInput.css'; // 确保CSS文件的路径正确
 import useWebSocket from '../../utils/websocketService'; // 引入自定义的useWebSocket Hook
 
-const ChatInput = ({displaySentmessage,onReceiveMessage, onFileUpload }) => {
+const ChatInput = ({messages, displaySentmessage,onReceiveMessage, onFileUpload }) => {
   const [inputValue, setInputValue] = useState('');
 
   const { sendMessage, isConnected } = useWebSocket('ws://10.82.77.104:8081', onReceiveMessage);
 
   const handleSendMessage = () => {
-    const messageObj = { text: inputValue, type: 'sent' }; // 添加类型为'sent'
-    const messageString = JSON.stringify(messageObj);
+    const newMessage={ text: inputValue, type: 'sent' }
+    const messageString = JSON.stringify([...messages,newMessage]);
     sendMessage(messageString);
-    displaySentmessage(messageObj);
+    displaySentmessage(newMessage);
     setInputValue(''); // 清空输入框
   };
 
