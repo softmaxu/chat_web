@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Message from '../Message/Message';
 
-const ChatWindow = ({ messages }) => {
+const ChatWindow = ({ messages, pagename, onRouteChange }) => {
+  useEffect(() => {
+    onRouteChange(pagename);
+  }, [pagename, onRouteChange]);
   return (
     <div className="chat-window">
-      <div>聊天对话</div>
+      <div className='page-topbar'>MoldGPT: {pagename} 模式</div>
       <div>
         {messages.map((message, index) => (
           <Message key={index} text={message.text} type={message.type} />

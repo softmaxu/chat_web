@@ -37,6 +37,7 @@
     cursor: pointer;
     padding: 0; /* 确保没有内边距导致额外空间 */
     margin: 0; /* 确保没有外边距导致额外空间 */
+    margin-left: 1%;
   }
 
   

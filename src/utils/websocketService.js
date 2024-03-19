@@ -15,6 +15,7 @@ function useWebSocket(url, onMessage) {
     };
 
     ws.current.onmessage = (event) => {
+      console.log('Received message piece:', event.data);
       if (onMessage) {
         onMessage(event.data);
       }

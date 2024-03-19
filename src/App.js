@@ -10,17 +10,17 @@ import useWebSocket from './utils/websocketService'; // 引入自定义的useWeb
 function App() {
   // 状态初始化
   const [messages, setMessages] = useState([
-    { text: '你是一个模具专业的AI大模型，请按照要求回答用户的提问。' ,type: 'sent'},
-    { text: '好的。请问我可以提供什么帮助？' ,type: 'received'}
+    { text: '你是一个模具专业的AI大模型，请按照要求回答用户的提问。', type: 'sent' },
+    { text: '好的。请问我可以提供什么帮助？', type: 'received' }
   ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [pages, setPages] = useState([
     { id: '1', name: '聊天对话', path: '/', Component: ChatWindow },
     { id: '2', name: '知识库问答', path: '/xx', Component: KnowledgeChat }
   ]);
-  const [currentPage, setCurrentPage] = useState('1');
+  const [currentPage, setCurrentPage] = useState('聊天对话');
 
-  const displaySentmessage = (message) => { 
+  const displaySentmessage = (message) => {
     setMessages((prevMessages) => [...prevMessages, message]);
     return messages;
   }
@@ -29,7 +29,7 @@ function App() {
 
   const handleNewMessage = useCallback((message) => {
     const messageObj = JSON.parse(message);
-    console.log("handleNewMessage",message)
+    console.log("handleNewMessage", message)
     const messageWithType = {
       ...messageObj, // 展开原始消息对象
       type: 'received', // 添加type字段
@@ -43,8 +43,9 @@ function App() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handlePageSelect = (pageId) => {
-    setCurrentPage(pageId);
+  const handlePageSelect = (pageName) => {
+    setCurrentPage(pageName);
+    // console.log("CurrentPage",currentPage);
     // 更新消息逻辑
   };
 
@@ -70,15 +71,19 @@ function App() {
           <Routes>
             {pages.map((page) => (
               <Route
-              className="chat-window"
+                className="chat-window"
                 key={page.id}
                 path={page.path}
-                element={<page.Component messages={messages} />}
+                element={<page.Component messages={messages} pagename={page.name}
+                  onRouteChange={handlePageSelect} />}
               />
-            ))}
+            ))
+            }
           </Routes>
           <div>
-            <ChatInput messages={messages} displaySentmessage={displaySentmessage} onReceiveMessage={handleNewMessage} onFileUpload={handleFileUpload} />
+            <ChatInput messages={messages} pageName={currentPage} displaySentmessage={displaySentmessage}
+              onReceiveMessage={handleNewMessage} onFileUpload={handleFileUpload}
+            />
           </div>
         </div>
       </div>
