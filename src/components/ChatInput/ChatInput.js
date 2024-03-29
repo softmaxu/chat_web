@@ -6,7 +6,7 @@ const ChatInput = ({messages, pageName, displaySentmessage,onReceiveMessage, onF
   console.log("ChatInput",pageName)
   const [inputValue, setInputValue] = useState('');
 
-  const { sendMessage, isConnected } = useWebSocket('ws://localhost:8081', onReceiveMessage);
+  const { sendMessage, isConnected } = useWebSocket('ws://10.82.77.104:8081', onReceiveMessage);
 
   const handleSendMessage = () => {
     const newMessage={ text: inputValue, type: 'sent', page:pageName }

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css'; // 确保引入了相应的CSS文件
 import SideList from './components/Sidebar/SideList';
@@ -24,18 +24,38 @@ function App() {
     setMessages((prevMessages) => [...prevMessages, message]);
     return messages;
   }
-
-
-
   const handleNewMessage = useCallback((message) => {
     const messageObj = JSON.parse(message);
-    console.log("handleNewMessage", message)
-    const messageWithType = {
-      ...messageObj, // 展开原始消息对象
-      type: 'received', // 添加type字段
-    };
-    console.log('New message:', messageWithType);
-    setMessages((prevMessages) => [...prevMessages, messageWithType]);
+    console.debug("handleNewMessage", message)
+    if (messageObj.operation==="syn"){
+      const messageWithType = {
+        ...messageObj, // 展开原始消息对象
+        type: 'received', // 添加type字段
+      };
+      console.debug("messageWithType",messageWithType)
+      setMessages((prevMessages) => [...prevMessages, messageWithType]);
+    }else if(messageObj.operation==="ack"){}
+    else{
+      console.debug("messageObj.text",messageObj.text)
+      setMessages(prevMessages => {
+        if (prevMessages.length === 0) {
+          return prevMessages;
+        }
+        // 深拷贝prevMessages数组，以避免直接修改状态
+        const newMessages = [...prevMessages];
+        // 取出最后一个消息对象
+        const lastMessage = newMessages[newMessages.length - 1];
+        // 假设你想拼接的字符串是newText
+        const newText = messageObj.text;
+        // 更新最后一个消息对象的text字段
+        newMessages[newMessages.length - 1] = {
+          ...lastMessage,
+          text: lastMessage.text + newText,
+        };
+        return newMessages;
+      });
+      console.debug("messages[messages.length-1]", messages[messages.length-1]);
+    }
   }, []);
 
   // 方法定义
