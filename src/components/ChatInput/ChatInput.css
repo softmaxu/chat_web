@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    background-color: #f4f4f4;
+    background-color: #ecf0f1;
     border-radius: 5px;
   }
   
@@ -38,6 +38,12 @@
     padding: 0; /* 确保没有内边距导致额外空间 */
     margin: 0; /* 确保没有外边距导致额外空间 */
     margin-left: 1%;
+  }
+
+  .websocket-status {
+    text-align: center; /* 文本居中 */
+    font-size: small; /* 小号字体 */
+    background-color: #ecf0f1;
   }
 
   
