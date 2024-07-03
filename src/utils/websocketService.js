@@ -41,7 +41,25 @@ function useWebSocket(url, onMessage) {
     }
   };
 
-  return { sendMessage, isConnected };
+  const sendFile = (file) => {
+    if (!file) return;
+    console.log('Sending file:', file);
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+        ws.current.send(event.target.result);
+      } else {
+        console.log('WebSocket is not connected.');
+      }
+    };
+
+    // 读取文件为 ArrayBuffer，准备通过 WebSocket 发送
+    reader.readAsArrayBuffer(file);
+  };
+
+  return { sendMessage,sendFile, isConnected };
 }
 
 export default useWebSocket;

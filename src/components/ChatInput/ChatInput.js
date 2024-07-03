@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import './ChatInput.css'; // 确保CSS文件的路径正确
 import useWebSocket from '../../utils/websocketService'; // 引入自定义的useWebSocket Hook
 
-const ChatInput = ({ messages, pageName, displaySentmessage, onReceiveMessage, onFileUpload }) => {
+const ChatInput = ({ messages, pageName, displaySentmessage, onReceiveMessage }) => {
   console.log("ChatInput", pageName)
   const [inputValue, setInputValue] = useState('');
 
-  const { sendMessage, isConnected } = useWebSocket('ws://10.82.77.104:8081', onReceiveMessage);
+  const { sendMessage,sendFile, isConnected } = useWebSocket('ws://10.82.77.104:8081', onReceiveMessage);
 
   const handleSendMessage = () => {
     const newMessage = { text: inputValue, type: 'sent', page: pageName }
@@ -18,16 +18,18 @@ const ChatInput = ({ messages, pageName, displaySentmessage, onReceiveMessage, o
 
   const handleKeyDown = (event) => {
     // 检查是否同时按下了Ctrl键和回车键
-    if (event.ctrlKey && event.key === 'Enter') {
+    if (event.metaKey && event.key === 'Enter') {
       handleSendMessage();
     }
   };
 
-  const handleFileChange = (event) => {
-    if (event.target.files.length > 0) {
-      onFileUpload(event.target.files[0]);
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      sendFile(file);
     }
   };
+
 
   return (
     <>
@@ -46,7 +48,7 @@ const ChatInput = ({ messages, pageName, displaySentmessage, onReceiveMessage, o
           <i className="fas fa-paperclip"></i> {/* 使用Font Awesome图标 */}
           <input
             type="file"
-            onChange={handleFileChange}
+            onChange={handleFileUpload}
             style={{ display: 'none' }} // 完全隐藏
           />
         </label>

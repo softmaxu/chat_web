@@ -1,14 +1,39 @@
+html{
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
 /* 消息样式基础 */
 .message {
     max-width: 80%;
     margin: 8px 10px; /* 上下消息间距 */
-    padding: 10px;
+    padding: 12px;
+    padding-right: 20px;
     border-radius: 20px; /* 消息泡泡圆角 */
     color: #333; /* 文字颜色 */
     font-family: Arial, sans-serif; /* 字体 */
     line-height: 1.4; /* 行高 */
     word-wrap: break-word; /* 长单词或URL自动换行 */
   }
+
+.message > * {
+    padding: 0;
+    margin-top: 0px; /* 消息内部元素的上边距 */
+    margin-bottom: 0px; /* 消息内部元素的下边距 */
+    margin-left: 5px;
+    width: 100%;
+}
+
+.message > ul,
+.message > ol {
+  list-style-position: inside;
+  margin-left: 20px; /* 设置列表的 margin 为 15px */
+}
+
+code {
+  display: block; /* 如果希望 <code> 标签独占一行 */
+  white-space: pre; /* 保持换行符和空格 */
+  overflow-x: auto; /* 当内容溢出时，水平滚动 */
+}
   
   /* 发送消息样式 */
   .sent-message {

@@ -65,13 +65,6 @@ function App() {
 
   const handlePageSelect = (pageName) => {
     setCurrentPage(pageName);
-    // console.log("CurrentPage",currentPage);
-    // 更新消息逻辑
-  };
-
-  const handleFileUpload = (file) => {
-    console.log(file);
-    // 文件上传逻辑
   };
 
   // 组件渲染
@@ -102,7 +95,7 @@ function App() {
           </Routes>
           <div>
             <ChatInput messages={messages} pageName={currentPage} displaySentmessage={displaySentmessage}
-              onReceiveMessage={handleNewMessage} onFileUpload={handleFileUpload}
+              onReceiveMessage={handleNewMessage} 
             />
           </div>
         </div>
