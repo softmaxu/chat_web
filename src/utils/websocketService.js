@@ -1,13 +1,14 @@
 // 文件路径: src/utils/websocketService.js
 
-import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 
-function useWebSocket(url, onMessage) {
+function useWebSocket(ws_url, http_url, onMessage) {
   const ws = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    ws.current = new WebSocket(url);
+    ws.current = new WebSocket(ws_url);
 
     ws.current.onopen = () => {
       console.log('WebSocket connected');
@@ -33,7 +34,7 @@ function useWebSocket(url, onMessage) {
     return () => {
       ws.current.close();
     };
-  }, [url, onMessage]);
+  }, [ws_url, onMessage]);
 
   const sendMessage = (message) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
@@ -41,25 +42,33 @@ function useWebSocket(url, onMessage) {
     }
   };
 
-  const sendFile = (file) => {
-    if (!file) return;
-    console.log('Sending file:', file);
+  const [uploadMessage, setUploadMessage] = useState('');
 
-    const reader = new FileReader();
+  const sendFiles = (files) => {
+    if (!files) return;
+    console.log('Sending file:', files);
+    const formData = new FormData();
 
-    reader.onload = (event) => {
-      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-        ws.current.send(event.target.result);
-      } else {
-        console.log('WebSocket is not connected.');
-      }
-    };
+    for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+    }
 
-    // 读取文件为 ArrayBuffer，准备通过 WebSocket 发送
-    reader.readAsArrayBuffer(file);
+    axios.post(http_url+'/api/upload', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then(response => {
+        setUploadMessage(response.data);
+        console.log("response.data",response.data);
+    }).catch(error => {
+        setUploadMessage('Failed to upload files');
+    }).finally(() => {
+        console.log('setUploadMessage: ');
+        console.log(uploadMessage);
+    });
   };
 
-  return { sendMessage,sendFile, isConnected };
+  return { sendMessage,sendFiles, isConnected };
 }
 
 export default useWebSocket;

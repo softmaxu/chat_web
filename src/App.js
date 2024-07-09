@@ -10,7 +10,7 @@ import useWebSocket from './utils/websocketService'; // 引入自定义的useWeb
 function App() {
   // 状态初始化
   const [messages, setMessages] = useState([
-    { text: '你是一个模具专业的AI大模型，请按照要求回答用户的提问。', type: 'sent' },
+    { text: '你是一个液压行业的AI大模型，请按照要求回答用户的提问。', type: 'sent' },
     { text: '好的。请问我可以提供什么帮助？', type: 'received' }
   ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

@@ -7,7 +7,7 @@ const KnowledgeChat = ({ messages, pagename, onRouteChange }) => {
     }, [pagename, onRouteChange]);
     return (
         <div className="chat-window">
-            <div className='page-topbar'>MoldGPT: {pagename} 模式</div>
+            <div className='page-topbar'>HydraulicGPT: {pagename} 模式</div>
             <div>
                 {messages.map((message, index) => (
                     <Message key={index} text={message.text} type={message.type} />
