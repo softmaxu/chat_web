@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import useWebSocket from '../../utils/websocketService'; // 引入自定义的useWebSocket Hook
 import './ChatInput.css'; // 确保CSS文件的路径正确
+import { sendFiles } from '../../utils/httpApi';
 
 const ChatInput = ({ messages, pageName, displaySentmessage, onReceiveMessage }) => {
   console.log("ChatInput", pageName)
   const [inputValue, setInputValue] = useState('');
 
-  const { sendMessage,sendFiles, isConnected } = useWebSocket('ws://10.82.77.104:8081', "http://10.82.77.104:9110", onReceiveMessage);
+  const { sendMessage, isConnected } = useWebSocket('ws://localhost:8081', onReceiveMessage);
 
   const handleSendMessage = () => {
     const newMessage = { text: inputValue, type: 'sent', page: pageName }
@@ -27,7 +28,7 @@ const ChatInput = ({ messages, pageName, displaySentmessage, onReceiveMessage })
     // console.log("event.target.files",event.target.files)
     const files = event.target.files;
     if (files) {
-      sendFiles(files);
+      sendFiles(files, "http://localhost:9110");
     }
   };
 

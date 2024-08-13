@@ -1,9 +1,8 @@
 // 文件路径: src/utils/websocketService.js
 
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
-function useWebSocket(ws_url, http_url, onMessage) {
+function useWebSocket(ws_url, onMessage) {
   const ws = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -42,33 +41,7 @@ function useWebSocket(ws_url, http_url, onMessage) {
     }
   };
 
-  const [uploadMessage, setUploadMessage] = useState('');
-
-  const sendFiles = (files) => {
-    if (!files) return;
-    console.log('Sending file:', files);
-    const formData = new FormData();
-
-    for (let i = 0; i < files.length; i++) {
-        formData.append('files', files[i]);
-    }
-
-    axios.post(http_url+'/api/upload', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    }).then(response => {
-        setUploadMessage(response.data);
-        console.log("response.data",response.data);
-    }).catch(error => {
-        setUploadMessage('Failed to upload files');
-    }).finally(() => {
-        console.log('setUploadMessage: ');
-        console.log(uploadMessage);
-    });
-  };
-
-  return { sendMessage,sendFiles, isConnected };
+  return { sendMessage, isConnected };
 }
 
 export default useWebSocket;

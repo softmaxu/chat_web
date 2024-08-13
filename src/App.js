@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useCallback, useState } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css'; // 确保引入了相应的CSS文件
-import SideList from './components/Sidebar/SideList';
-import ChatWindow from './components/ChatPage/ChatWindow';
 import ChatInput from './components/ChatInput/ChatInput';
+import ChatWindow from './components/ChatPage/ChatWindow';
 import KnowledgeChat from './components/KbPage/KnowledgeChat';
-import useWebSocket from './utils/websocketService'; // 引入自定义的useWebSocket Hook
+import RagManager from './components/RagDbPage/RagManager';
+import SideList from './components/Sidebar/SideList';
 
 function App() {
   // 状态初始化
@@ -16,7 +16,8 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [pages, setPages] = useState([
     { id: '1', name: '聊天对话', path: '/', Component: ChatWindow },
-    { id: '2', name: '知识库问答', path: '/xx', Component: KnowledgeChat }
+    { id: '2', name: '知识库问答', path: '/kb', Component: KnowledgeChat },
+    { id: '3', name: '知识库管理', path: '/db/rag', Component: RagManager }
   ]);
   const [currentPage, setCurrentPage] = useState('聊天对话');
 
