@@ -1,0 +1,4 @@
+.results-table{
+    overflow-y: scroll;
+    height: 150px;
+}

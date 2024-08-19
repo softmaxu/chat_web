@@ -49,3 +49,17 @@ export const sendFiles = (files, http_url) => {
   }).finally(() => {
   });
 };
+
+export const fetchDbNames = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/rag/getDbList`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching db names:', error);
+    throw error;
+  }
+};

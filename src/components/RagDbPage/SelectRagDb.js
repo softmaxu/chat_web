@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
-import { selectKnowledgeBases } from "../../utils/httpApi";
+import React, { useState, useEffect } from 'react';
+import { selectKnowledgeBases, fetchDbNames } from "../../utils/httpApi";
+import "./SelectRagDb.css";
 
 const SelectRagDb = () => {
   const [select, setSelect] = useState('');
   const [limit, setLimit] = useState(50);
-  const [dbname, setDbname] = useState('')
+  const [dbname, setDbname] = useState(localStorage.getItem('selectedDbName') || '');
   const [results, setResults] = useState([]);
+  const [dbOptions, setDbOptions] = useState([]);
+
+  // 使用fetchDbNames函数获取可用的数据库名称
+  useEffect(() => {
+    const loadDbNames = async () => {
+      try {
+        const data = await fetchDbNames();
+        setDbOptions(data);
+      } catch (error) {
+        console.error('Error loading db names:', error);
+      }
+    };
+    loadDbNames();
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const data = await selectKnowledgeBases({"db_name":dbname,"keyword": select, "limit":limit});
+      const data = await selectKnowledgeBases({ "db_name": dbname, "keyword": select, "limit": limit });
       setResults(data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
+  const handleDbChange = (e) => {
+    const selectedDb = e.target.value;
+    setDbname(selectedDb);
+    localStorage.setItem('selectedDbName', selectedDb); // 持久化存储选中的db_name
+  };
+
   return (
     <div>
-      <h2>select Knowledge Base</h2>
+      <h2>Select Knowledge Base</h2>
       <form onSubmit={handleSearch}>
-      <div>
+        <div>
           <label>db_name:</label>
-          <input
-            type="text"
-            value={dbname}
-            onChange={(e) => setDbname(e.target.value)}
-            placeholder="知识库名称"
-          />
+          <select value={dbname} onChange={handleDbChange} required>
+            <option value="" disabled>Select a Knowledge Base</option>
+            {dbOptions.map((db, index) => (
+              <option key={index} value={db}>{db}</option>
+            ))}
+          </select>
         </div>
         <div>
           <label>select:</label>
